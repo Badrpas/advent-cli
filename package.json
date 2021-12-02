@@ -5,6 +5,9 @@
   "type": "commonjs",
   "author": "Vadim Samarin",
   "license": "MIT",
+  "bin": {
+    "advent-cli": "bin.js"
+  },
   "dependencies": {
     "axios": "0.24.0",
     "cheerio": "^1.0.0-rc.10",

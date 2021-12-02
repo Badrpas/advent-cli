@@ -44,7 +44,7 @@ if (!SESSION_TOKEN) {
 }
 
 
-(async () => {
+async function main () {
   if (!await exists(DAYS_DIR)) {
     await mkdir(DAYS_DIR);
   }
@@ -77,9 +77,7 @@ if (!SESSION_TOKEN) {
   await Promise.all(promises);
 
   console.log(`All done`);
-})().catch(err => {
-  console.error(err);
-});
+}
 
 
 async function downloadDescription (url, outDir, fileName = 'description.md') {
@@ -170,3 +168,7 @@ function getOutputDir () {
 
   return path.resolve(relative);
 }
+
+main().catch(err => {
+  console.error(err);
+});
