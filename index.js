@@ -45,7 +45,7 @@ if (!SESSION_TOKEN) {
 
 async function main () {
   if (!await exists(DAYS_DIR)) {
-    await mkdir(DAYS_DIR);
+    await mkdir(DAYS_DIR, { recursive: true });
   }
 
   const localDirs = await glob(path.join(DAYS_DIR, `day*`));
