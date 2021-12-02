@@ -24,12 +24,16 @@ dotenv.config({ path: path.join(DIR, '.env') });
 
 console.log(process.env.AOC_SESSION);
 
-const SESSION_TOKEN = process.env.AOC_SESSION || getCliOption('session');
+const SESSION_TOKEN = getCliOption('session') || process.env.AOC_SESSION;
 if (!SESSION_TOKEN) {
-  if (getCliOption('ignore-token')) {
-    console.warn(`No input data will be loaded (--ignore-token)`);
+  if (getCliOption('no-session', { boolean: true })) {
+    console.warn(`No input data will be loaded (--no-session)`);
   } else {
-    console.error(`Advent of code token required`)
+    console.error(`
+      Advent of code 'session' cookie is required.
+      Pass it via '--session <SESSION>' arg or AOC_SESSION env.
+      Use '--no-session' to skip input data load.
+    `)
     process.exit(1);
   }
 }
@@ -83,7 +87,10 @@ async function downloadDescription (url, outDir, fileName = 'description.md') {
   await writeFile(filePath, mdConverted + getMdFooter(url));
 }
 
-function getMdFooter (url) { return `\n\n*(link to original)[${url}]*\n`; }
+function getMdFooter (url) {
+  return `\n\n----------------------
+  *[Read on adventofcode.com](${url})*\n`;
+}
 
 async function downloadInputData (baseUrl, outDir, fileName = 'input.txt') {
   if (!SESSION_TOKEN) return;
