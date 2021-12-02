@@ -2,12 +2,13 @@
   "name": "fetch",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
+  "type": "commonjs",
   "author": "Vadim Samarin",
   "license": "MIT",
   "dependencies": {
     "axios": "0.24.0",
     "cheerio": "^1.0.0-rc.10",
+    "dotenv": "^10.0.0",
     "glob": "7.2.0",
     "turndown": "7.1.1"
   }
