@@ -23,7 +23,6 @@ const YEAR = getCliOption('year') || getCurrentYear();
 dotenv.config({ path: process.cwd() });
 dotenv.config({ path: path.join(DIR, '.env') });
 
-console.log(process.env.AOC_SESSION);
 
 const SESSION_TOKEN = getCliOption('session') || process.env.AOC_SESSION;
 if (!SESSION_TOKEN) {
