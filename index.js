@@ -5,6 +5,7 @@ const axios = require('axios');
 const rawGlob = require('glob');
 const path = require('path');
 const { promisify } = require('util');
+const { URLSearchParams } = require('url');
 const { mkdir, writeFile, access } = require('fs/promises');
 
 const glob = promisify(rawGlob);
@@ -36,6 +37,10 @@ if (!SESSION_TOKEN) {
     `)
     process.exit(1);
   }
+} else {
+  axios.defaults.headers = {
+    cookie: `session=${SESSION_TOKEN}`
+  };
 }
 
 
@@ -95,13 +100,26 @@ function getMdFooter (url) {
 async function downloadInputData (baseUrl, outDir, fileName = 'input.txt') {
   if (!SESSION_TOKEN) return;
 
-  const { data: inputText } = await axios.get(baseUrl + '/input', {
-    headers: { cookie: `session=${SESSION_TOKEN}` }
-  });
+  const { data: inputText } = await axios.get(baseUrl + '/input');
 
   const filePath = path.join(outDir, fileName);
 
   await writeFile(filePath, inputText);
+}
+
+async function sendAnswer (url, answer, level = 1) {
+  const qs = new URLSearchParams({
+    level,
+    answer,
+  }).toString();
+
+  const resp = await axios({
+    url: `https://adventofcode.com/2021/day/1/answer`,
+    method: 'POST',
+    data: qs,
+  });
+  // TODO: handle response.
+  // wrong answer gives 200 - parse contents?
 }
 
 
