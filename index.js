@@ -105,13 +105,14 @@ async function downloadInputData (baseUrl, outDir, fileName = 'input.txt') {
 }
 
 
-function getCliOption (name) {
+function getCliOption (name, { boolean = false } = {}) {
   if (!name) return getCliInput();
 
   for (let i = 2; i < process.argv.length; i++){
     const arg = process.argv[i];
 
     if (`--${name}` === arg) {
+      if (boolean) return true;
       return process.argv[i + 1];
     }
   }
