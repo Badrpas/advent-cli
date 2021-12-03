@@ -83,7 +83,10 @@ async function downloadDescription (url, outDir, fileName = 'description.md') {
   const { data: descriptionPageHTML } = await axios.get(url);
 
   const $ = cheerio.load(descriptionPageHTML);
-  const mdConverted = turndownService.turndown($('main > article').html());
+  const html = $('main > article').map((index, el) => {
+    return $(el).html();
+  }).toArray().join('\n');
+  const mdConverted = turndownService.turndown(html);
 
   const filePath = path.join(outDir, fileName);
   await writeFile(filePath, mdConverted + getMdFooter(url));
